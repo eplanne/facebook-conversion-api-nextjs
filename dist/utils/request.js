@@ -46,11 +46,14 @@ exports.getClientFbp = getClientFbp;
  * @param req
  */
 const getClientFbc = (req) => {
-    var _a;
     if (req.headers.referer) {
         const url = new URL(req.headers.referer);
         if (url.searchParams.has('fbclid')) {
-            return (_a = url.searchParams.get('fbclid')) !== null && _a !== void 0 ? _a : '';
+            const fbclid = url.searchParams.get('fbclid') || '';
+            // const subdomainIndex = getSubdomainIndex(req.headers.host || '');
+            const subdomainIndex = 1;
+            const creationTime = Date.now();
+            return `fb.${subdomainIndex}.${creationTime}.${fbclid}`;
         }
     }
     const cookies = new universal_cookie_1.default(req.headers.cookie);
